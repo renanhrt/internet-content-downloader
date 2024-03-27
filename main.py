@@ -17,6 +17,7 @@ def login():
         yt = YouTube(url)
         yt.register_on_progress_callback(progress_callback)
         yt.register_on_complete_callback(complete_callback)
+        
         stream = yt.streams.get_highest_resolution()
         filename = stream.download()
 
