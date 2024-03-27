@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from pytube.cli import on_progress
 from pytube import YouTube
 import os
 
@@ -10,8 +9,6 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
- 
- 
 @app.route('/download', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
