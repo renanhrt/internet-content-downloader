@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <title>Youtube Downloader</title>
+</head>
+<body>
+    <div class="maincontent">
+        <div class="youtube-downloader">
+            <h1>Youtube Downloader</h1>
+            <form action="/watch" method="post" id="urlForm">
+                <input type="link" name="url" id="url" placeholder="Enter Youtube URL">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

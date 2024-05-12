@@ -1,0 +1,58 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.maincontent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f1f1f1;
+}
+
+.youtube-downloader{
+    border-radius: 12px;
+    width: 50%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    flex-direction: column;
+    border: solid 1px black;
+}
+h1{
+    color: #282828;
+    font-size: 48px;
+    margin-bottom: 20px;
+};
+
+input{
+    width: 400px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+};
+
+button{
+    width: 100px;
+    height: 40px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+.download-features{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
