@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script defer src="{{url_for('static', filename='script.js')}}"></script>
     <title>Download</title>
 </head>
 <body>
@@ -15,27 +15,31 @@
                 <button type="submit" class="submit-button">Search</button>
             </form>
             <div class="download-features">
-                <img src="https://i.ytimg.com/vi/Pw-0pbY9JeU/hq720.jpg?sqp=-oaymwEXCNUGEOADIAQqCwjVARCqCBh4INgESFo&rs=AOn4CLAuYj4sZRjcYkQVCHNt6Q8DQq2TqA" alt="Video Thumbnail">
+                <img src="{{ thumbnail_url }}" alt="Video Thumbnail">
                 <div class="video-details">
-                    <h2>Video Title</h2>
-                    <p>Video author</p>
-                    <p>Views</p>
-                    <p>Published Date</p>
+                    <h2>{{ title }}</h2>
+                    <p>Author: {{ author }}</p>
+                    <p>Views: {{ views }}</p>
+                    <p>Publish date: {{ date }}</p>
                 </div>
-                <form action="/download">
-                    <div class="media-format-toggle">
-                        <input id="on" name="state-d" type="radio" checked="" />
-                        <label for="on" onclick="">MP3</label>
-                      
-                        <input id="na" name="state-d" type="radio" checked="checked" />
-                        <label for="na" class="disabled" onclick="">MP4</label>
-                      
-                        <input id="off" name="state-d" type="radio" />
-                        <label for="off" onclick="">WM3</label>
-                      </div>
-                </form>
-                
             </div>
+
+            <input type="hidden" id="qualities" value="{{ stream_info | tojson | safe}}">
+
+            <form action="/watch/download" class="download" id="downloadForm" method="POST">
+                <div class="media-format-toggle">
+                    {% for mime_type, details in stream_info.items() %}
+                        <input id="{{ mime_type }}" name="type" type="radio" value="{{ mime_type }}" {% if loop.first %}checked{% endif %}>
+                        <label for="{{ mime_type }}">{{ mime_type }}</label>
+                    {% endfor %}
+                </div>
+                <div class="media-format-toggle" id="qualitySelectorContainer">
+                    <!-- Quality options will be dynamically added here -->
+                </div>
+                <input type="hidden" name="url" value="{{ url }}">    
+            </form>
+
+            <button type="button" id="submitButton" class="submit-button">Download</button>
         </div>
     </div>
 </body>

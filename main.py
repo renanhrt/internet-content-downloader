@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 from pytube import YouTube
 import os
 
@@ -17,26 +17,54 @@ def login():
         yt = YouTube(url)
         yt.register_on_progress_callback(progress_callback)
         yt.register_on_complete_callback(complete_callback)
-
         thumbnail_url = yt.thumbnail_url
-        print(thumbnail_url)
+        title = yt.title
+        views = yt.views
+        author = yt.author
+        date = yt.publish_date
+        streams = yt.fmt_streams
+        
+        stream_info = {}
+        for stream in streams:
+            mime_type = stream.mime_type
+            quality = getattr(stream, 'resolution', getattr(stream, 'abr', None))
 
-        #stream = yt.streams.get_highest_resolution()
-        #filename = stream.download()
+            if mime_type not in stream_info:
+                stream_info[mime_type] = {"qualities": set()}
+            
+            if quality:
+                stream_info[mime_type]["qualities"].add(quality)
 
-        return render_template('watch.html', thumbnail_url = thumbnail_url)
-        #return send_file(filename, as_attachment=True)
+        for mime_type in stream_info:
+            stream_info[mime_type]["qualities"] = list(stream_info[mime_type]["qualities"])
+
+        return render_template('watch.html', thumbnail_url = thumbnail_url, title = title, views = views, author = author, date=date, url=url, stream_info=stream_info)
     else:
         return render_template('watch.html')
 
+@app.route('/watch/download', methods=['POST', 'GET'])
+def download():
+    if request.method == 'POST':
+        for key, value in request.form.items():
+            print(key, value)
+        url = request.form['url']
 
+        yt = YouTube(url)
+        yt.register_on_progress_callback(progress_callback)
+        yt.register_on_complete_callback(complete_callback)
+
+        stream = yt.streams.get_highest_resolution()
+        filename = stream.download()
+
+        return send_file(filename, as_attachment=True)
+    else:
+        return render_template('watch.html')
 
 def progress_callback(stream, chunk, bytes_remaining):
     size = stream.filesize
     progress = int(((size - bytes_remaining) / size) * 100)
     print(progress)
     
-
 def complete_callback(stream, file_handle):
     print("downloading finished")
 

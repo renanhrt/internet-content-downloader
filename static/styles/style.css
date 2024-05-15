@@ -14,11 +14,20 @@ body{
 
 .maincontent{
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
+    height: 95vh;
+    padding-top: 5vh;
     width: 70%;
+    background-color: #f1f1f1;
+    gap: 40px;
+}
+.maincont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
     background-color: #f1f1f1;
 }
 
@@ -32,6 +41,7 @@ body{
     background-color: white;
     flex-direction: column;
     border: solid 1px black;
+    grid-template-columns: 1fr 3fr 1fr;    
 }
 h1{
     color: #282828;
@@ -72,21 +82,40 @@ img{
     width: 50%;
 }
 
+
 .media-format-toggle {
-    float: left;
+    display: inline-block;
     background: white;
     border: solid 1px black;
- }
- .media-format-toggle input {
-   position: absolute;
-   opacity: 0;
- }
- .media-format-toggle input + label {
-   padding: 7px;
-   float:left;
-   color: black;
-   cursor: pointer;
- }
- .media-format-toggle input:checked + label {
-   background: grey;
+    margin: 10px 30px;
+    font-size: 40px;
+}
+
+.media-format-toggle input {
+    position: absolute;
+    opacity: 0;
+}
+
+.media-format-toggle input + label {
+    padding: 7px;
+    color: black;
+    cursor: pointer;
+    display: inline-block; 
+}
+
+.media-format-toggle input:checked + label {
+    background: grey;
+}
+
+.media-format-toggle input:disabled + label {
+    color: #999; 
+}
+
+
+
+ .donwload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
  }
