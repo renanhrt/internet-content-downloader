@@ -24,8 +24,6 @@
                 </div>
             </div>
 
-            <input type="hidden" id="qualities" value="{{ stream_info | tojson | safe}}">
-
             <form action="/watch/download" class="download" id="downloadForm" method="POST">
                 <div class="media-format-toggle">
                     {% for mime_type, details in stream_info.items() %}
@@ -42,5 +40,56 @@
             <button type="button" id="submitButton" class="submit-button">Download</button>
         </div>
     </div>
+
+
+    <script>
+        function populateQualitySelector(selectedType) {
+            const qualitySelectorContainer = document.getElementById('qualitySelectorContainer');
+            qualitySelectorContainer.innerHTML = '';
+
+            const streamJson = JSON.parse('{{ stream_info | tojson | safe }}');
+
+            try {
+                const typeQualities = streamJson[selectedType];
+                
+                console.log('Parsed qualities:', typeQualities);
+
+                typeQualities.forEach((quality, index) => {
+                    const input = document.createElement('input');
+                    input.id = quality;
+                    input.name = 'quality';
+                    input.type = 'radio';
+                    input.value = quality;
+                    if (index === 0) {
+                        input.checked = true;
+                    }
+
+                    const label = document.createElement('label');
+                    label.htmlFor = quality;
+                    label.textContent = quality;
+
+                    qualitySelectorContainer.appendChild(input);
+                    qualitySelectorContainer.appendChild(label);
+                });
+
+            } catch (error) {
+                console.error('Error parsing JSON data:', error);
+            }
+            }
+
+            document.querySelectorAll('input[name="type"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                const selectedType = this.value;
+                console.log('Selected type:', selectedType);
+                populateQualitySelector(selectedType);
+            });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const firstType = document.querySelector('input[name="type"]:checked').value;
+            console.log('First type:', firstType);
+            populateQualitySelector(firstType);
+            });
+    </script>
 </body>
 </html>
